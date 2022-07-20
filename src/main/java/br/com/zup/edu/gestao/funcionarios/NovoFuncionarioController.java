@@ -4,6 +4,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class NovoFuncionarioController {
 
     @Transactional
     @PostMapping("/api/funcionarios")
+    @PreAuthorize("hasAuthority('SCOPE_funcionarios:write')")
     public ResponseEntity<?> cadastra(@RequestBody @Valid NovoFuncionarioRequest request, UriComponentsBuilder uriBuilder) {
 
         if (repository.existsByCpf(request.getCpf())) {

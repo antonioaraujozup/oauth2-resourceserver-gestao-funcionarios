@@ -3,6 +3,7 @@ package br.com.zup.edu.gestao.funcionarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class ListaFuncionariosController {
     private FuncionarioRepository repository;
 
     @GetMapping("/api/funcionarios")
+    @PreAuthorize("hasAuthority('SCOPE_funcionarios:read')")
     public ResponseEntity<?> lista() {
 
         List<FuncionarioResponse> funcionarios = repository.findAll(Sort.by("nome")).stream().map(funcionario -> {
